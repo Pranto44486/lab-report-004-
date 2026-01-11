@@ -1,0 +1,85 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Random;
+
+public class CircleDrawingGUI extends JFrame implements ActionListener
+ {
+
+private JButton drawButton, clearButton;
+ private DrawPanel panel;
+
+public CircleDrawingGUI()
+ {
+     setTitle("Draw Circle GUI");
+    setSize(500, 500);
+     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        drawButton = new JButton("Draw Circle");
+        clearButton = new JButton("Clear");
+
+ drawButton.addActionListener(this);
+clearButton.addActionListener(this);
+
+    JPanel buttonPanel = new JPanel();
+     buttonPanel.add(drawButton);
+     buttonPanel.add(clearButton);
+
+    panel = new DrawPanel();
+
+    add(buttonPanel, BorderLayout.NORTH);
+     add(panel, BorderLayout.CENTER);
+
+     setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) 
+    {
+    if (e.getSource() == drawButton)
+     {
+        panel.drawCircle();
+        } else if (e.getSource() == clearButton)
+         {
+        panel.clearPanel();
+        }
+    }
+
+    public static void main(String[] args)
+     {
+     new CircleDrawingGUI();
+    }
+}
+
+class DrawPanel extends JPanel
+ {
+
+private int x = -1, y = -1;
+private final int DIAMETER = 50;
+
+    public void drawCircle()
+     {
+        Random rand = new Random();
+        x = rand.nextInt(getWidth() - DIAMETER);
+        y = rand.nextInt(getHeight() - DIAMETER);
+        repaint();
+    }
+
+    public void clearPanel()
+     {
+     x = -1;
+    y = -1;
+    repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) 
+    {
+    super.paintComponent(g);
+    if (x != -1 && y != -1)
+    {
+ g.setColor(Color.BLUE);
+ g.fillOval(x, y, DIAMETER, DIAMETER);
+        }
+    }
+}
